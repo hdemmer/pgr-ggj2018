@@ -11,6 +11,7 @@ var SPEED = 100;
 var MIN_SPEED = -2;
 var MAX_SPEED = 2;
 
+var boatTransmitting = false;
 var boatAngle = 0;
 var boatSpeed = 0;
 var boatX = 100;
@@ -64,6 +65,7 @@ function drawUISprite(name,x,y,angle)
 }
 
 var prevKey = "";
+var prevTransmitKey = "";
 var boatCos = 0;
 var boatSin = 0;
 
@@ -79,6 +81,13 @@ function processInput()
 		prevKey = "down";
 	} else {
 		prevKey = "";
+	}
+	if (getKey("t"))
+	{
+		if (prevTransmitKey != "t") boatTransmitting = !boatTransmitting;
+		prevTransmitKey = "t";
+	} else {
+		prevTransmitKey = "";
 	}
 
 	if (boatSpeed > MAX_SPEED) boatSpeed = MAX_SPEED;
@@ -140,8 +149,12 @@ function drawScene()
 
 	drawSprite("boat_antenna",boatX+10*boatCos,boatY+10*boatSin-10, 0);
 
-	drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75, 0);
+	if (boatTransmitting)
+	{
+		drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75, 0);
+	}
 
+	drawEnemies();
 	drawCities();
 	drawUI();
 
@@ -158,6 +171,15 @@ function drawCities()
 		if (happiness > 5) happiness = 5;
 
 		drawSprite("happiness"+happiness,city.x,city.y - 15);
+	}
+}
+
+function drawEnemies()
+{
+	for (var i = enemies.length - 1; i >= 0; i--) {
+		var enemy = enemies[i]
+		drawSprite("enemy_lower",enemy.x,enemy.y, enemy.angle);
+		drawSprite("enemy_upper",enemy.x,enemy.y - 10, enemy.angle);
 	}
 }
 
