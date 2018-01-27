@@ -17,28 +17,35 @@ function initCollision()
 
 function isWater(x,y)
 {
+	x/=10;
+	y/=10;
 	if (x < 0 || y < 0 || x >= terrainDataWidth || y >= terrainDataHeight) return false;
 
 	var pixelData = terrainData[(Math.round(y) * terrainDataWidth + Math.round(x)) * 4 ];
-	return pixelData < 0.5;
+	return pixelData > 0.5;
 }
 
-function nearestWaterTo(x,y)
+function nearestWaterTo(x,y,orgX,orgY)
 {
-	if (x < 0) return nearestWaterTo(0,y);
-	if (y < 0) return nearestWaterTo(x,0);
-	if (x >= terrainDataWidth) return nearestWaterTo(terrainDataWidth-1,y);
-	if (y >= terrainDataHeight) return nearestWaterTo(x,terrainDataHeight-1);
+	if (x < 0) return nearestWaterTo(0,y,orgX,orgY);
+	if (y < 0) return nearestWaterTo(x,0,orgX,orgY);
+	if (x >= terrainDataWidth * 10) return nearestWaterTo((terrainDataWidth*10),y,orgX,orgY);
+	if (y >= terrainDataHeight * 10) return nearestWaterTo(x,(terrainDataHeight*10),orgX,orgY);
 
-	for (var a = 0; a < 6; a++) {
-			for (var r = 1; r < 10; r+=3) {
-				var nx = x + Math.cos(a)  * r;
-				var ny = y + Math.sin(a) * r;
+	var dx = x - orgX;
+	var dy = y - orgY;
+
+	for (var a = 10; a > 0; a--) {
+		var t = a / 10;
+		var it = 1-t;
+		//if (it > 0.5) it = 1-it;
+
+				var nx = x + dx * t;
+				var ny = y + dy * t;
 				if (isWater(nx,ny))
 				{
 					return [nx,ny];
 				}
-		}
 	}
 
 	return [x,y];

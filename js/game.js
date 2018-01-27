@@ -105,14 +105,19 @@ function processInput()
 	boatCos = Math.cos(boatAngle);
 	boatSin = Math.sin(boatAngle);
 
-	boatX += boatCos * boatSpeed * SPEED * deltaTime;
-	boatY += boatSin * boatSpeed * SPEED * deltaTime;
+	var nx = boatX + boatCos * boatSpeed * SPEED * deltaTime;
+	var ny = boatY + boatSin * boatSpeed * SPEED * deltaTime;
 
-	if (!isWater(boatX,boatY))
+	if (!isWater(nx,ny))
 	{
-		var nearest = nearestWaterTo(boatX,boatY);
-		boatX = nearest[0];
-		boatY = nearest[1];
+		var nearest = nearestWaterTo(nx,ny,boatX,boatY);
+		nx = nearest[0];
+		ny = nearest[1];
+	}
+	if (isWater(nx,ny))
+	{
+		boatX = nx;
+		boatY = ny;
 	}
 
 	scrollX += (boatX - screenWidth * 0.5 - scrollX) * 0.5 * deltaTime;
@@ -189,7 +194,9 @@ function drawCities()
 		if (happiness < 0) happiness = 0;
 		if (happiness > 5) happiness = 5;
 
-		drawSprite("happiness"+happiness,city.x,city.y - 15);
+		drawSprite("city_post"+city.post,city.x,city.y);
+		drawSprite("city_pre"+city.pre,city.x,city.y);
+		drawSprite("happiness"+happiness,city.x,city.y - 55);
 	}
 }
 

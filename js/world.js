@@ -15,7 +15,9 @@ function spawnEnemy(x,y)
 
 function spawnCity(x,y)
 {
-	cities.push({x:x,y:y,complete:0});
+	var pre = Math.floor(Math.random() * 5.9);
+	var post = Math.floor(Math.random() * 5.9);
+	cities.push({x:x,y:y,complete:0, pre:pre,post:post});
 }
 
 function distanceToBoat(x,y)
