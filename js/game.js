@@ -10,10 +10,12 @@ var uiRubber = 0.1;
 var SPEED = 100;
 var MIN_SPEED = -2;
 var MAX_SPEED = 2;
+var ACCELERATION = 0.005;
 
 var boatTransmitting = false;
 var boatAngle = 0;
 var boatSpeed = 0;
+var boatTargetSpeed = 0.0;
 var boatX = 100;
 var boatY = 100;
 var isGameOver = false;
@@ -75,10 +77,10 @@ function processInput()
 	if (getKey("left")) boatAngle -= 0.01;
 	if (getKey("right")) boatAngle += 0.01;
 	if (getKey("up")) {
-		if (prevKey != "up") boatSpeed += 1;
+		if (prevKey != "up") boatTargetSpeed += 1;
 		prevKey = "up";
 	} else if (getKey("down")){
-		if (prevKey != "down") boatSpeed -= 1;
+		if (prevKey != "down") boatTargetSpeed -= 1;
 		prevKey = "down";
 	} else {
 		prevKey = "";
@@ -91,6 +93,12 @@ function processInput()
 		prevTransmitKey = "";
 	}
 
+	if (boatSpeed < boatTargetSpeed) {
+		boatSpeed+=ACCELERATION;
+	}
+	if (boatSpeed > boatTargetSpeed) {
+		boatSpeed-=ACCELERATION;
+	}
 	if (boatSpeed > MAX_SPEED) boatSpeed = MAX_SPEED;
 	if (boatSpeed < MIN_SPEED) boatSpeed = MIN_SPEED;
 
@@ -199,7 +207,7 @@ function drawUI()
 	var leftUIY = screenHeight / 2;
 	drawUISprite("engine_control_shadow",0,leftUIY + 5);
 	drawUISprite("engine_control",0,leftUIY);
-	var angle = boatSpeed * -0.56;
+	var angle = boatTargetSpeed * -0.56;
 	drawUISprite("engine_lever_shadow",0,leftUIY + 8, angle);
 	drawUISprite("engine_lever",0,leftUIY, angle);
 
