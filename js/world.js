@@ -42,7 +42,7 @@ function signalStrengthAt(x,y)
 function initWorld()
 {
 	spawnCity(400,200);
-	spawnEnemy(400,100);
+	spawnEnemy(400,300);
 }
 
 function tickWorld()

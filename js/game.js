@@ -215,8 +215,18 @@ function drawEnemies()
 {
 	for (var i = enemies.length - 1; i >= 0; i--) {
 		var enemy = enemies[i]
+		var cos = Math.cos(enemy.angle);
+		var sin = Math.sin(enemy.angle);
+
 		drawSprite("enemy_lower",enemy.x,enemy.y, enemy.angle);
 		drawSprite("enemy_upper",enemy.x,enemy.y - 10, enemy.angle);
+		drawSprite("boat_house",enemy.x - 5 * cos,enemy.y - 5 * sin - 14, enemy.angle);
+		if (enemy.attracted)
+		{
+			var s = Math.floor(time*4 + i*0.2 ) % 2;
+			s+=1;
+			drawSprite("enemy_siren"+s,enemy.x - 15 * cos,enemy.y - 15 * sin - 15);
+		}
 	}
 }
 
