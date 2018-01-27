@@ -9,11 +9,19 @@ var scrollX = -0.5 * screenWidth;
 var scrollY = -0.5 * screenHeight;
 
 var scrollRubber = 0.3;
+var SPEED = 10;
+var MIN_SPEED = -2;
+var MAX_SPEED = 2;
 
 var boatAngle = 0;
 var boatSpeed = 0;
 var boatX = 0;
 var boatY = 0;
+var trans_frame = 1;
+
+var time = new Date().getTime() / 1000;
+var deltaTime = 0;
+
 
 function start() {
     var canvas = document.getElementById("thecanvas");
@@ -39,18 +47,32 @@ function drawSprite(name,x,y,angle)
 	ctx.restore();
 }
 
-function drawScene()
+var prevKey = "";
+var boatCos = 0;
+var boatSin = 0;
+
+function processInput()
 {
 	if (getKey("left")) boatAngle -= 0.01;
 	if (getKey("right")) boatAngle += 0.01;
-	if (getKey("up")) boatSpeed += 0.1;
-	if (getKey("down")) boatSpeed -= 0.1;
+	if (getKey("up")) {
+		if (prevKey != "up") boatSpeed += 1;
+		prevKey = "up";
+	} else if (getKey("down")){
+		if (prevKey != "down") boatSpeed -= 1;
+		prevKey = "down";
+	} else {
+		prevKey = "";
+	}
 
-	var boatCos = Math.cos(boatAngle);
-	var boatSin = Math.sin(boatAngle);
+	if (boatSpeed > MAX_SPEED) boatSpeed = MAX_SPEED;
+	if (boatSpeed < MIN_SPEED) boatSpeed = MIN_SPEED;
 
-	boatX += boatCos * boatSpeed;
-	boatY += boatSin * boatSpeed;
+	boatCos = Math.cos(boatAngle);
+	boatSin = Math.sin(boatAngle);
+
+	boatX += boatCos * boatSpeed * SPEED * deltaTime;
+	boatY += boatSin * boatSpeed * SPEED * deltaTime;
 
 	if (boatX > scrollX + (0.5 + scrollRubber) * screenWidth)
 	{
@@ -68,18 +90,40 @@ function drawScene()
 	{
 		scrollY = boatY - (0.5 - scrollRubber) * screenHeight;
 	}
+}
+
+function drawScene()
+{
+	var t = new Date().getTime() / 1000;
+	deltaTime = t - time;
+	time = t;
+
+	processInput();
 
 	tickWorld();
 
+	trans_frame = (Math.round(time * 1.9) % 4) + 1;
+
 	//ctx.drawImage(sprites["map"],10,10); 
 	drawSprite("map",0,0);
-	drawSprite("boat_hull",boatX,boatY, boatAngle);
+	drawSprite("boat_hull_lower",boatX,boatY, boatAngle);
 	drawSprite("boat_hull",boatX,boatY-8, boatAngle);
 
 	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-8, boatAngle);
 	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-14, boatAngle);
 
-	drawSprite("boat_antenna",boatX+10*boatCos,boatY+10*boatSin-8, 0);
+	drawSprite("boat_antenna",boatX+10*boatCos,boatY+10*boatSin-10, 0);
+
+	drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75, 0);
+
+	drawUI();
 
 	window.requestAnimationFrame(drawScene);
+}
+
+function drawUI()
+{
+	drawSprite("engine_control",screenWidth / -2,0);
+	var angle = boatSpeed * -0.56;
+	drawSprite("engine_lever",screenWidth / -2,0, angle);
 }
