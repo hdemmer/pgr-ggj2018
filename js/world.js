@@ -43,6 +43,11 @@ function initWorld()
 {
 	spawnCity(400,200);
 	spawnEnemy(400,300);
+
+	for (var i = cities.length - 1; i >= 0; i--) {
+		var city = cities[i];
+		city.hasGuy = true;
+	}
 }
 
 function tickWorld()
@@ -54,6 +59,14 @@ function tickWorld()
 
 			var signal = signalStrengthAt(city.x,city.y);
 			city.complete += signal * deltaTime * boatConversion;
+			if (city.complete > 1)
+			{
+				if (city.hasGuy)
+				{
+					city.hasGuy = false;
+					collectedGuys ++;
+				}
+			}
 		}
 	}
 

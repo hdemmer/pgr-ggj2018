@@ -29,8 +29,8 @@ function nearestWaterTo(x,y,orgX,orgY)
 {
 	if (x < 0) return nearestWaterTo(0,y,orgX,orgY);
 	if (y < 0) return nearestWaterTo(x,0,orgX,orgY);
-	if (x >= terrainDataWidth * 10) return nearestWaterTo((terrainDataWidth*10),y,orgX,orgY);
-	if (y >= terrainDataHeight * 10) return nearestWaterTo(x,(terrainDataHeight*10),orgX,orgY);
+	if (x > terrainDataWidth * 10 - 1) return nearestWaterTo((terrainDataWidth*10)-1,y,orgX,orgY);
+	if (y > terrainDataHeight * 10 - 1) return nearestWaterTo(x,(terrainDataHeight*10)-1,orgX,orgY);
 
 	var dx = x - orgX;
 	var dy = y - orgY;
