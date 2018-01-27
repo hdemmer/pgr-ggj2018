@@ -5,13 +5,15 @@ var sprites = {};
 
 var screenWidth = 800;
 var screenHeight = 600;
-var scrollX = -0.5 * screenWidth;
-var scrollY = -0.5 * screenHeight;
-
-var scrollRubber = 0.3;
+var scrollRubber = 0.2;
+var uiRubber = 0.2
 var SPEED = 35;
 var MIN_SPEED = -2;
 var MAX_SPEED = 2;
+
+
+var scrollX = -0.5 * screenWidth;
+var scrollY = -1 * uiRubber * screenHeight;
 
 var boatAngle = 0;
 var boatSpeed = 0;
@@ -85,6 +87,9 @@ function processInput()
 	boatX += boatCos * boatSpeed * SPEED * deltaTime;
 	boatY += boatSin * boatSpeed * SPEED * deltaTime;
 
+	scrollX += (boatX - screenWidth * 0.5 - scrollX) * 0.5 * deltaTime;
+	scrollY += (boatY - screenWidth * uiRubber - scrollY) * 0.5 * deltaTime;
+
 	if (boatX > scrollX + (0.5 + scrollRubber) * screenWidth)
 	{
 		scrollX = boatX - (0.5 + scrollRubber) * screenWidth;
@@ -93,9 +98,9 @@ function processInput()
 	{
 		scrollX = boatX - (0.5 - scrollRubber) * screenWidth;
 	}
-	if (boatY > scrollY + (0.5 + scrollRubber) * screenHeight)
+	if (boatY > scrollY + (0.5 + scrollRubber - uiRubber) * screenHeight)
 	{
-		scrollY = boatY - (0.5 + scrollRubber) * screenHeight;
+		scrollY = boatY - (0.5 + scrollRubber - uiRubber) * screenHeight;
 	}
 	if (boatY < scrollY + (0.5 - scrollRubber) * screenHeight)
 	{
@@ -134,9 +139,10 @@ function drawScene()
 
 function drawUI()
 {
-	drawUISprite("engine_control_shadow",0,screenHeight / 2 + 5);
-	drawUISprite("engine_control",0,screenHeight / 2);
+	var leftUIY = screenHeight / 3;
+	drawUISprite("engine_control_shadow",0,leftUIY + 5);
+	drawUISprite("engine_control",0,leftUIY);
 	var angle = boatSpeed * -0.56;
-	drawUISprite("engine_lever_shadow",0,screenHeight / 2 + 8, angle);
-	drawUISprite("engine_lever",0,screenHeight / 2, angle);
+	drawUISprite("engine_lever_shadow",0,leftUIY + 8, angle);
+	drawUISprite("engine_lever",0,leftUIY, angle);
 }
