@@ -1,0 +1,7 @@
+
+var agents = [];
+
+function tickWorld()
+{
+
+}

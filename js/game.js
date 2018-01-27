@@ -66,6 +66,8 @@ function drawScene()
 		scrollY = boatY - (0.5 - scrollRubber) * screenHeight;
 	}
 
+	tickWorld();
+
 	//ctx.drawImage(sprites["map"],10,10); 
 	drawSprite("map",0,0);
 	drawSprite("boat",boatX,boatY, boatAngle);
