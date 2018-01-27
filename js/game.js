@@ -46,8 +46,11 @@ function drawScene()
 	if (getKey("up")) boatSpeed += 0.1;
 	if (getKey("down")) boatSpeed -= 0.1;
 
-	boatX += Math.cos(boatAngle) * boatSpeed;
-	boatY += Math.sin(boatAngle) * boatSpeed;
+	var boatCos = Math.cos(boatAngle);
+	var boatSin = Math.sin(boatAngle);
+
+	boatX += boatCos * boatSpeed;
+	boatY += boatSin * boatSpeed;
 
 	if (boatX > scrollX + (0.5 + scrollRubber) * screenWidth)
 	{
@@ -70,7 +73,13 @@ function drawScene()
 
 	//ctx.drawImage(sprites["map"],10,10); 
 	drawSprite("map",0,0);
-	drawSprite("boat",boatX,boatY, boatAngle);
+	drawSprite("boat_hull",boatX,boatY, boatAngle);
+	drawSprite("boat_hull",boatX,boatY-8, boatAngle);
+
+	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-8, boatAngle);
+	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-14, boatAngle);
+
+	drawSprite("boat_antenna",boatX+10*boatCos,boatY+10*boatSin-8, 0);
 
 	window.requestAnimationFrame(drawScene);
 }
