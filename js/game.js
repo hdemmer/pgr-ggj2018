@@ -93,6 +93,15 @@ function processInput()
 		prevTransmitKey = "";
 	}
 
+	if (boatTargetSpeed > 2)
+	{
+		boatTargetSpeed = 2;
+	}
+	if (boatTargetSpeed < -2)
+	{
+		boatTargetSpeed = -2;
+	}
+
 	if (boatSpeed < boatTargetSpeed) {
 		boatSpeed+=ACCELERATION;
 	}
@@ -118,6 +127,8 @@ function processInput()
 	{
 		boatX = nx;
 		boatY = ny;
+	} else {
+		boatSpeed = 0;
 	}
 
 	scrollX += (boatX - screenWidth * 0.5 - scrollX) * 0.5 * deltaTime;
