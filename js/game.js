@@ -3,6 +3,13 @@
 var ctx;
 var sprites = {};
 
+var screenWidth = 800;
+var screenHeight = 600;
+var scrollX = -0.5 * screenWidth;
+var scrollY = -0.5 * screenHeight;
+
+var scrollRubber = 0.3;
+
 var boatAngle = 0;
 var boatSpeed = 0;
 var boatX = 0;
@@ -25,7 +32,7 @@ function drawSprite(name,x,y,angle)
 {
 	var image = sprites[name];
 	ctx.save();
-	ctx.translate(x, y);
+	ctx.translate(x - scrollX, y - scrollY);
 	ctx.rotate(angle);
 	ctx.translate(-0.5 * image.width,-0.5 * image.height);
 	ctx.drawImage(image,0,0);
@@ -42,7 +49,25 @@ function drawScene()
 	boatX += Math.cos(boatAngle) * boatSpeed;
 	boatY += Math.sin(boatAngle) * boatSpeed;
 
-	ctx.drawImage(sprites["map"],10,10); 
+	if (boatX > scrollX + (0.5 + scrollRubber) * screenWidth)
+	{
+		scrollX = boatX - (0.5 + scrollRubber) * screenWidth;
+	}
+	if (boatX < scrollX + (0.5 - scrollRubber) * screenWidth)
+	{
+		scrollX = boatX - (0.5 - scrollRubber) * screenWidth;
+	}
+	if (boatY > scrollY + (0.5 + scrollRubber) * screenHeight)
+	{
+		scrollY = boatY - (0.5 + scrollRubber) * screenHeight;
+	}
+	if (boatY < scrollY + (0.5 - scrollRubber) * screenHeight)
+	{
+		scrollY = boatY - (0.5 - scrollRubber) * screenHeight;
+	}
+
+	//ctx.drawImage(sprites["map"],10,10); 
+	drawSprite("map",0,0);
 	drawSprite("boat",boatX,boatY, boatAngle);
 
 	window.requestAnimationFrame(drawScene);
