@@ -7,18 +7,18 @@ var screenWidth = 800;
 var screenHeight = 600;
 var scrollRubber = 0.2;
 var uiRubber = 0.2
-var SPEED = 35;
+var SPEED = 100;
 var MIN_SPEED = -2;
 var MAX_SPEED = 2;
 
-
-var scrollX = -0.5 * screenWidth;
-var scrollY = -1 * uiRubber * screenHeight;
-
 var boatAngle = 0;
 var boatSpeed = 0;
-var boatX = 0;
-var boatY = 0;
+var boatX = 100;
+var boatY = 100;
+
+var scrollX = -0.5 * screenWidth + boatX;
+var scrollY = -1 * uiRubber * screenHeight + boatY;
+
 var trans_frame = 1;
 
 var time = new Date().getTime() / 1000;
@@ -34,6 +34,8 @@ function start() {
 		var s = spriteElements[i];
 		sprites[s.id] = s;
 	}
+
+	initCollision();
 
     drawScene();
 }
@@ -86,6 +88,13 @@ function processInput()
 
 	boatX += boatCos * boatSpeed * SPEED * deltaTime;
 	boatY += boatSin * boatSpeed * SPEED * deltaTime;
+
+	if (!isWater(boatX,boatY))
+	{
+		var nearest = nearestWaterTo(boatX,boatY);
+		boatX = nearest[0];
+		boatY = nearest[1];
+	}
 
 	scrollX += (boatX - screenWidth * 0.5 - scrollX) * 0.5 * deltaTime;
 	scrollY += (boatY - screenWidth * uiRubber - scrollY) * 0.5 * deltaTime;
