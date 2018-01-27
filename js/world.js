@@ -11,7 +11,7 @@ var boatConversion = 1;
 
 function spawnEnemy(x,y)
 {
-	enemies.push({x:x,y:y,attracted:false,angle:0});
+	enemies.push({x:x,y:y,attracted:false,angle:0,spawnTime:time});
 }
 
 function spawnCity(x,y)
@@ -125,6 +125,10 @@ function tickWorld()
 
 	for (var i = enemies.length - 1; i >= 0; i--) {
 		var enemy = enemies[i];
+		if ((time - enemy.spawnTime) < 2)
+		{
+			continue;
+		}
 		if (enemy.attracted)
 		{
 			var d = distanceToBoat(enemy.x,enemy.y);
