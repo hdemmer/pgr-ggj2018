@@ -172,10 +172,10 @@ function drawScene()
 	ctx.clearRect(0,0,screenWidth,screenHeight);
 	//ctx.drawImage(sprites["map"],10,10); 
 	drawSprite("map",2000,1500);
-
+	drawCities();
 	drawEnemies();
 	drawBoat();
-	drawCities();
+	
 	drawUI();
 
 	window.requestAnimationFrame(drawScene);
@@ -203,9 +203,11 @@ function drawCities()
 	for (var i = cities.length - 1; i >= 0; i--) {
 		var city = cities[i];
 
-		var happiness = Math.floor(city.complete * 5);
-		if (happiness < 0) happiness = 0;
-		if (happiness > 5) happiness = 5;
+		var happiness = 2;
+
+		if (city.complete <= 0) happiness = 0;
+		else if (city.complete >= 1) happiness = 5;
+		else if (city.receiving) happiness = "o";
 
 		drawSprite("city_post"+city.post,city.x,city.y);
 		drawSprite("city_pre"+city.pre,city.x,city.y);

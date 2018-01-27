@@ -7,7 +7,7 @@ var BASE_RADIUS = 100;
 var BUSTED_DISTANCE = 40;
 var SCALE = 10;
 var boatPower = 1;
-var boatConversion = 1;
+var boatConversion = 0.1;
 
 function spawnEnemy(x,y)
 {
@@ -18,7 +18,9 @@ function spawnCity(x,y)
 {
 	var pre = Math.floor(Math.random() * 5.9);
 	var post = Math.floor(Math.random() * 5.9);
-	cities.push({x:x,y:y,complete:0.5, pre:pre,post:post,evil:false,hasGuy:false});
+	cities.push({x:x,y:y,complete:0.5,
+		pre:pre,post:post,evil:false,hasGuy:false,
+		receiving:false});
 }
 
 function distanceToBoat(x,y)
@@ -99,6 +101,7 @@ function tickWorld()
 			var city = cities[i];
 
 			var signal = signalStrengthAt(city.x,city.y);
+			city.receiving = signal > 0.1;
 			var sign = 1;
 			if (city.evil) {sign = -1;}
 			city.complete += sign * signal * deltaTime * boatConversion;
