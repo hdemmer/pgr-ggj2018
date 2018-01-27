@@ -9,7 +9,7 @@ var scrollX = -0.5 * screenWidth;
 var scrollY = -0.5 * screenHeight;
 
 var scrollRubber = 0.3;
-var SPEED = 10;
+var SPEED = 35;
 var MIN_SPEED = -2;
 var MAX_SPEED = 2;
 
@@ -41,6 +41,17 @@ function drawSprite(name,x,y,angle)
 	var image = sprites[name];
 	ctx.save();
 	ctx.translate(x - scrollX, y - scrollY);
+	ctx.rotate(angle);
+	ctx.translate(-0.5 * image.width,-0.5 * image.height);
+	ctx.drawImage(image,0,0);
+	ctx.restore();
+}
+
+function drawUISprite(name,x,y,angle)
+{
+	var image = sprites[name];
+	ctx.save();
+	ctx.translate(x, y);
 	ctx.rotate(angle);
 	ctx.translate(-0.5 * image.width,-0.5 * image.height);
 	ctx.drawImage(image,0,0);
@@ -123,7 +134,7 @@ function drawScene()
 
 function drawUI()
 {
-	drawSprite("engine_control",screenWidth / -2,0);
+	drawUISprite("engine_control",0,screenHeight / 2);
 	var angle = boatSpeed * -0.56;
-	drawSprite("engine_lever",screenWidth / -2,0, angle);
+	drawUISprite("engine_lever",0,screenHeight / 2, angle);
 }
