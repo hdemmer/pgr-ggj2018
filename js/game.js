@@ -6,7 +6,7 @@ var sprites = {};
 var screenWidth = 800;
 var screenHeight = 600;
 var scrollRubber = 0.2;
-var uiRubber = 0.2
+var uiRubber = 0.1;
 var SPEED = 100;
 var MIN_SPEED = -2;
 var MAX_SPEED = 2;
@@ -19,7 +19,7 @@ var boatY = 100;
 var isGameOver = false;
 
 var scrollX = -0.5 * screenWidth + boatX;
-var scrollY = -1 * uiRubber * screenHeight + boatY;
+var scrollY = -1 * (0.5-uiRubber) * screenHeight + boatY;
 
 var trans_frame = 1;
 
@@ -108,7 +108,7 @@ function processInput()
 	}
 
 	scrollX += (boatX - screenWidth * 0.5 - scrollX) * 0.5 * deltaTime;
-	scrollY += (boatY - screenWidth * uiRubber - scrollY) * 0.5 * deltaTime;
+	scrollY += (boatY - screenWidth * (0.4-uiRubber) - scrollY) * 0.5 * deltaTime;
 
 	if (boatX > scrollX + (0.5 + scrollRubber) * screenWidth)
 	{
@@ -118,9 +118,9 @@ function processInput()
 	{
 		scrollX = boatX - (0.5 - scrollRubber) * screenWidth;
 	}
-	if (boatY > scrollY + (0.5 + scrollRubber - uiRubber) * screenHeight)
+	if (boatY > scrollY + (0.5 + scrollRubber) * screenHeight)
 	{
-		scrollY = boatY - (0.5 + scrollRubber - uiRubber) * screenHeight;
+		scrollY = boatY - (0.5 + scrollRubber) * screenHeight;
 	}
 	if (boatY < scrollY + (0.5 - scrollRubber) * screenHeight)
 	{
@@ -143,8 +143,20 @@ function drawScene()
 		trans_frame = (Math.round(time * 1.9) % 4) + 1;
 	}
 
+	ctx.clearRect(0,0,screenWidth,screenHeight);
 	//ctx.drawImage(sprites["map"],10,10); 
-	drawSprite("map",0,0);
+	drawSprite("map",2000,1500);
+
+	drawEnemies();
+	drawBoat();
+	drawCities();
+	drawUI();
+
+	window.requestAnimationFrame(drawScene);
+}
+
+function drawBoat()
+{
 	drawSprite("boat_hull_lower",boatX,boatY, boatAngle);
 	drawSprite("boat_hull",boatX,boatY-8, boatAngle);
 
@@ -158,11 +170,6 @@ function drawScene()
 		drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75, 0);
 	}
 
-	drawEnemies();
-	drawCities();
-	drawUI();
-
-	window.requestAnimationFrame(drawScene);
 }
 
 function drawCities()
@@ -189,7 +196,7 @@ function drawEnemies()
 
 function drawUI()
 {
-	var leftUIY = screenHeight / 3;
+	var leftUIY = screenHeight / 2;
 	drawUISprite("engine_control_shadow",0,leftUIY + 5);
 	drawUISprite("engine_control",0,leftUIY);
 	var angle = boatSpeed * -0.56;

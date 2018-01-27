@@ -4,7 +4,7 @@ var enemies = [];
 
 var ENEMY_SPEED = 20;
 var BASE_RADIUS = 100;
-var BUSTED_DISTANCE = 10;
+var BUSTED_DISTANCE = 40;
 var boatPower = 1;
 var boatConversion = 1;
 
