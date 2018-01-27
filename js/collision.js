@@ -15,6 +15,22 @@ function initCollision()
 	terrainData = terrainCanvas.getContext('2d').getImageData(0,0, img.width, img.height).data;
 }
 
+function findCityLocations()
+{
+	var locations = [];
+	for (var x=0;x<terrainDataWidth;x++)
+	{
+		for (var y=0;y<terrainDataHeight;y++)
+		{
+			if (terrainData[(x + terrainDataWidth*y) * 4 + 2] > 254)
+			{
+				locations.push([x,y]);
+			}
+		}
+	}
+	return locations;
+}
+
 function isWater(x,y)
 {
 	x/=10;

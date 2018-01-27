@@ -5,6 +5,7 @@ var enemies = [];
 var ENEMY_SPEED = 20;
 var BASE_RADIUS = 100;
 var BUSTED_DISTANCE = 40;
+var SCALE = 10;
 var boatPower = 1;
 var boatConversion = 1;
 
@@ -41,7 +42,28 @@ function signalStrengthAt(x,y)
 
 function initWorld()
 {
-	spawnCity(400,200);
+	var locs = findCityLocations();
+	for (var i = locs.length - 1; i >= 0; i--) {
+		var loc = locs[i];
+		var invalid = false;
+		for (var j=0;j<i;j++)
+		{
+			var prLoc = locs[j];
+			var dx = loc[0] - prLoc[0];
+			var dy = loc[1] - prLoc[1];
+			var d = dx*dx + dy*dy;
+			if (d < 25) {
+				invalid = true;
+				break;
+			}
+		}
+		if (!invalid)
+		{
+			spawnCity(loc[0]*SCALE,loc[1]*SCALE);
+		}
+	}
+
+	
 	spawnEnemy(400,300);
 
 	for (var i = cities.length - 1; i >= 0; i--) {
