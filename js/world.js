@@ -18,7 +18,7 @@ function spawnCity(x,y)
 {
 	var pre = Math.floor(Math.random() * 5.9);
 	var post = Math.floor(Math.random() * 5.9);
-	cities.push({x:x,y:y,complete:0, pre:pre,post:post});
+	cities.push({x:x,y:y,complete:0.5, pre:pre,post:post,evil:false,hasGuy:false});
 }
 
 function distanceToBoat(x,y)
@@ -68,8 +68,27 @@ function initWorld()
 
 	for (var i = cities.length - 1; i >= 0; i--) {
 		var city = cities[i];
-		city.hasGuy = true;
+		city.hasGuy = (Math.random() < 0.7?true:false);
+		city.evil = Math.random() < 0.7;
 	}
+}
+
+function trySpawnEnemy(city)
+{
+	var RAD = 25;
+	var bx = (boatX + city.x) / 2;
+	var by = (boatY + city.y) / 2;
+	for (var i = 0; i < 10 ;i++)
+	{
+		var x = bx + (Math.random() -0.5) * RAD;
+		var y = by + (Math.random() -0.5) * RAD;
+		if (isWater(x,y))
+		{
+			spawnEnemy(x,y);
+			return;
+		}
+	}
+	
 }
 
 function tickWorld()
@@ -80,9 +99,21 @@ function tickWorld()
 			var city = cities[i];
 
 			var signal = signalStrengthAt(city.x,city.y);
-			city.complete += signal * deltaTime * boatConversion;
+			var sign = 1;
+			if (city.evil) {sign = -1;}
+			city.complete += sign * signal * deltaTime * boatConversion;
+			if (city.complete < 0)
+			{
+				if (city.hasGuy)
+				{
+					city.hasGuy = false;
+					trySpawnEnemy(city);
+				}
+				city.complete = 0;
+			}
 			if (city.complete > 1)
 			{
+				city.complete = 1;
 				if (city.hasGuy)
 				{
 					city.hasGuy = false;
