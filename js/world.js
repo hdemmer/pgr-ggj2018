@@ -4,6 +4,7 @@ var enemies = [];
 
 var ENEMY_SPEED = 20;
 var BASE_RADIUS = 100;
+var BUSTED_DISTANCE = 10;
 var boatPower = 1;
 var boatConversion = 1;
 
@@ -59,6 +60,11 @@ function tickWorld()
 		if (enemy.attracted)
 		{
 			var d = distanceToBoat(enemy.x,enemy.y);
+			if (d < BUSTED_DISTANCE)
+			{
+				isGameOver = true;
+				return;
+			}
 			var dx = (boatX - enemy.x) / d;
 			var dy = (boatY - enemy.y) / d;
 

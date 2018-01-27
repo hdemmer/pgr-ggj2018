@@ -16,6 +16,7 @@ var boatAngle = 0;
 var boatSpeed = 0;
 var boatX = 100;
 var boatY = 100;
+var isGameOver = false;
 
 var scrollX = -0.5 * screenWidth + boatX;
 var scrollY = -1 * uiRubber * screenHeight + boatY;
@@ -129,15 +130,18 @@ function processInput()
 
 function drawScene()
 {
-	var t = new Date().getTime() / 1000;
-	deltaTime = t - time;
-	time = t;
+	if (!isGameOver)
+	{
+		var t = new Date().getTime() / 1000;
+		deltaTime = t - time;
+		time = t;
 
-	processInput();
+		processInput();
 
-	tickWorld();
+		tickWorld();
 
-	trans_frame = (Math.round(time * 1.9) % 4) + 1;
+		trans_frame = (Math.round(time * 1.9) % 4) + 1;
+	}
 
 	//ctx.drawImage(sprites["map"],10,10); 
 	drawSprite("map",0,0);
@@ -191,4 +195,9 @@ function drawUI()
 	var angle = boatSpeed * -0.56;
 	drawUISprite("engine_lever_shadow",0,leftUIY + 8, angle);
 	drawUISprite("engine_lever",0,leftUIY, angle);
+
+	if (isGameOver)
+	{
+		drawUISprite("busted",screenWidth /2,screenHeight /2, 0);
+	}
 }
