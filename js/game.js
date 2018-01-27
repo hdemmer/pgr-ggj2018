@@ -36,6 +36,7 @@ function start() {
 	}
 
 	initCollision();
+	initWorld();
 
     drawScene();
 }
@@ -141,9 +142,23 @@ function drawScene()
 
 	drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75, 0);
 
+	drawCities();
 	drawUI();
 
 	window.requestAnimationFrame(drawScene);
+}
+
+function drawCities()
+{
+	for (var i = cities.length - 1; i >= 0; i--) {
+		var city = cities[i];
+
+		var happiness = Math.floor(city.complete * 5);
+		if (happiness < 0) happiness = 0;
+		if (happiness > 5) happiness = 5;
+
+		drawSprite("happiness"+happiness,city.x,city.y - 15);
+	}
 }
 
 function drawUI()
