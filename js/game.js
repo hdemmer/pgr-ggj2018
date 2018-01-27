@@ -134,7 +134,9 @@ function drawScene()
 
 function drawUI()
 {
+	drawUISprite("engine_control_shadow",0,screenHeight / 2 + 5);
 	drawUISprite("engine_control",0,screenHeight / 2);
 	var angle = boatSpeed * -0.56;
+	drawUISprite("engine_lever_shadow",0,screenHeight / 2 + 8, angle);
 	drawUISprite("engine_lever",0,screenHeight / 2, angle);
 }
