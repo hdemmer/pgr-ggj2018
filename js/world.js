@@ -79,7 +79,7 @@ function initWorld()
 	for (var i = cities.length - 1; i >= 0; i--) {
 		var city = cities[i];
 		city.hasGuy = (Math.random() < 0.7?true:false);
-		city.evil = Math.random() < 0.7;
+		city.evil = Math.random() < 0.6;
 
 		if (!city.evil && city.hasGuy)
 		{
