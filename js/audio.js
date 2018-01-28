@@ -33,7 +33,7 @@ function startBackgroundMusic(trackName) {
 function playSirenLoopIfNeeded() {
 
     if (sirenTrack == null) {
-        createAudio("audio/siren_loop.wav", { volume: 0.2, loop: true, muted: false }, function(event) {
+        createAudio("audio/siren_loop.wav", { volume: 0.1, loop: true, muted: false }, function(event) {
             sirenTrack = event.target
             sirenTrack.play()
         }) 
