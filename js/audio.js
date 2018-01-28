@@ -33,7 +33,7 @@ function startBackgroundMusic(trackName) {
 function playSirenLoopIfNeeded() {
 
     if (sirenTrack == null) {
-        createAudio("audio/siren_loop.wav", { volume: 0.5, loop: true, muted: false }, function(event) {
+        createAudio("audio/siren_loop.wav", { volume: 0.2, loop: true, muted: false }, function(event) {
             sirenTrack = event.target
             sirenTrack.play()
         }) 
@@ -41,10 +41,16 @@ function playSirenLoopIfNeeded() {
 }
 
 function playSpawnSound() {
-
-    createAudio("audio/attract1.wav", { volume: 0.5, loop: false, muted: false }, function(event) {
-        event.target.play()
-    }) 
+    
+    if (spawnTrack == null) {
+        createAudio("audio/attract1.wav", { volume: 0.5, loop: false, muted: false }, function(event) {
+            spawnTrack = event.target
+            spawnTrack.play()
+        }) 
+    }
+    else {
+        spawnTrack.play()
+    }
 }
 
 
