@@ -243,6 +243,20 @@ function drawUI()
 	drawUISprite("engine_lever_shadow",0,leftUIY + 8, angle);
 	drawUISprite("engine_lever",0,leftUIY, angle);
 
+	if (boatTransmitting)
+	{
+		drawUISprite("ui_music_on",40,35);
+	} else {
+		drawUISprite("ui_music_off",40,35);
+	}
+	drawUISprite("key_t",95,35);
+	drawUISprite("key_w",35,140);
+	drawUISprite("key_s",35,450);
+
+	if (getKey("up")) drawUISprite("key_lit_w",35,140);
+	if (getKey("down")) drawUISprite("key_lit_s",35,450);
+	if (getKey("t")) drawUISprite("key_lit_t",95,35);
+
 	for (var i=0;i<collectedGuys;i++)
 	{
 		drawUISprite("portrait"+(i+1),50+100*i,screenHeight-75);

@@ -21,7 +21,7 @@ function initInput(){
     document.addEventListener("touchend", absorbEvent_, false);
 }
 
-var keyMap = {"left":37,"up":38,"right":39,"down":40,"t":84};
+var keyMap = {"left":65,"up":87,"right":68,"down":83,"t":84};
 
 function getKey(key)
 {
