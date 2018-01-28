@@ -287,10 +287,11 @@ function drawUI()
 	if (getKey("left")) drawUISprite("key_lit_a",30,570);
 	if (getKey("right")) drawUISprite("key_lit_d",90,570);
 
+	var absTime = (new Date().getTime() / 1000);
 	
 	if (isGameOver)
 	{
-		var frame = Math.floor((new Date().getTime() / 1000)*1.5 % 2) + 1;
+		var frame = Math.floor(absTime*1.5 % 2) + 1;
 		if (collectedGuys >= NUM_GUYS)
 		{
 			drawUISprite("ui_partytime"+frame,screenWidth /2,screenHeight /2 -50, 0);
@@ -303,7 +304,9 @@ function drawUI()
 
 	for (var i=0;i<collectedGuys;i++)
 	{
-		drawUISprite("portrait"+(i+1),250+120*i,screenHeight-75);
+		var off = Math.abs(Math.cos(absTime * (i+3)));
+		off *= 15;
+		drawUISprite("portrait"+(i+1),250+120*i,screenHeight-75-off);
 	}
 
 }
