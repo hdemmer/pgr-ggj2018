@@ -70,8 +70,11 @@ function transmitNoGuysMusic() {
 }
 
 function stopTransmitNoGuysMusic() {
-    noGuysTrack.muted = true
-    noGuysTrack.pause()
+   
+    if (noGuysTrack != nul) {
+        noGuysTrack.muted = true
+        noGuysTrack.pause()
+    }
 }
 
 function onAudioLoaded(event) {
