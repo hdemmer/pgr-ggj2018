@@ -173,6 +173,7 @@ function drawScene()
 	//ctx.drawImage(sprites["map"],10,10); 
 	drawSprite("map",2000,1500);
 	drawWaves();
+	drawBoatWake();
 	drawCities();
 	drawEnemies();
 	drawBoat();
@@ -183,28 +184,30 @@ function drawScene()
 }
 
 var waveAngle = 0;
-
-function drawBoat()
+function drawBoatWake()
 {
-
 	waveAngle = ((1-deltaTime)*waveAngle + deltaTime * boatAngle);
 	var waveFrame = Math.floor(time*3) % 2 + 1;
 	if (boatSpeed > 1)
 	{
 		drawSprite("wave"+waveFrame,boatX - 70 * boatCos,boatY - 70 * boatSin, waveAngle);
 	}
+}
+function drawBoat()
+{
+	var sway = 3*Math.sin(time);
 
-	drawSprite("boat_hull_lower",boatX,boatY, boatAngle);
-	drawSprite("boat_hull",boatX,boatY-8, boatAngle);
+	drawSprite("boat_hull_lower",boatX,boatY + sway, boatAngle);
+	drawSprite("boat_hull",boatX,boatY-8 + sway, boatAngle);
 
-	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-8, boatAngle);
-	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-14, boatAngle);
+	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-8 + sway, boatAngle);
+	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-14 + sway, boatAngle);
 
-	drawSprite("boat_antenna",boatX+10*boatCos,boatY+10*boatSin-10, 0);
+	drawSprite("boat_antenna",boatX+10*boatCos,boatY+10*boatSin-10 + sway, 0);
 
 	if (boatTransmitting)
 	{
-		drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75, 0);
+		drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75 + sway, 0);
 	}
 
 }
