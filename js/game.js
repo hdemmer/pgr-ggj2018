@@ -43,7 +43,7 @@ function start() {
 
 	initCollision();
 	initWorld();
-
+	initTracks(["track-0.wav","track-1.wav", "track-2.wav", "track-3.wav"]);
     drawScene();
 }
 
@@ -71,11 +71,12 @@ function drawUISprite(name,x,y,angle)
 
 var prevKey = "";
 var prevTransmitKey = "";
+var prevMuteKey = "m"
 var boatCos = 0;
 var boatSin = 0;
 
 function processInput()
-{
+{	
 	if (getKey("left")) boatAngle -= 0.01;
 	if (getKey("right")) boatAngle += 0.01;
 	if (getKey("up")) {
@@ -89,7 +90,25 @@ function processInput()
 	}
 	if (getKey("t"))
 	{
-		if (prevTransmitKey != "t") boatTransmitting = !boatTransmitting;
+		if (prevTransmitKey != "t") { 
+			boatTransmitting = !boatTransmitting;
+			if(boatTransmitting) {
+				if (collectedGuys == 0) {
+					transmitNoGuysMusic()
+				}
+				else {
+					toggleAllGuys(collectedGuys, true)
+				}
+			}
+			else {
+				if (collectedGuys == 0) {
+					stopTransmitNoGuysMusic()
+				}
+				else {
+					toggleAllGuys(collectedGuys, false)
+				}
+			}
+		}
 		prevTransmitKey = "t";
 	} else {
 		prevTransmitKey = "";
