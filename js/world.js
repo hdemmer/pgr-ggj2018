@@ -75,10 +75,29 @@ function initWorld()
 	spawnEnemy(400,300);
 	spawnWave(550,550);
 
+	var guyCount = 0;
+
 	for (var i = cities.length - 1; i >= 0; i--) {
 		var city = cities[i];
 		city.hasGuy = (Math.random() < 0.7?true:false);
 		city.evil = Math.random() < 0.7;
+
+		if (!city.evil && city.hasGuy)
+		{
+			guyCount ++;
+		}
+	}
+
+	while (guyCount < NUM_GUYS)
+	{
+		var i = Math.floor(Math.random() * (cities.length -1));
+		var city = cities[i];
+		if (city.evil || !city.hasGuy)
+		{
+			city.evil = false;
+			city.hasGuy = true;
+			guyCount ++;
+		}
 	}
 }
 
