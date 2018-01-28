@@ -19,7 +19,7 @@ var boatTargetSpeed = 0.0;
 var boatX = 600;
 var boatY = 600;
 var isGameOver = false;
-var NUM_GUYS = 5;
+var NUM_GUYS = 4;
 var collectedGuys = 0;
 
 var scrollX = -0.5 * screenWidth + boatX;
@@ -191,6 +191,8 @@ function drawScene()
 	ctx.clearRect(0,0,screenWidth,screenHeight);
 	//ctx.drawImage(sprites["map"],10,10); 
 	drawSprite("map",2000,1500);
+	drawWaves();
+	drawBoatWake();
 	drawCities();
 	drawEnemies();
 	drawBoat();
@@ -200,21 +202,46 @@ function drawScene()
 	window.requestAnimationFrame(drawScene);
 }
 
+var waveAngle = 0;
+function drawBoatWake()
+{
+	waveAngle = ((1-deltaTime)*waveAngle + deltaTime * boatAngle);
+	var waveFrame = Math.floor(time*3) % 2 + 1;
+	if (boatSpeed > 1)
+	{
+		drawSprite("wave"+waveFrame,boatX - 70 * boatCos,boatY - 70 * boatSin, waveAngle);
+	}
+}
 function drawBoat()
 {
-	drawSprite("boat_hull_lower",boatX,boatY, boatAngle);
-	drawSprite("boat_hull",boatX,boatY-8, boatAngle);
+	var sway = 3*Math.sin(time);
 
-	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-8, boatAngle);
-	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-14, boatAngle);
+	drawSprite("boat_hull_lower",boatX,boatY + sway, boatAngle);
+	drawSprite("boat_hull",boatX,boatY-8 + sway, boatAngle);
 
-	drawSprite("boat_antenna",boatX+10*boatCos,boatY+10*boatSin-10, 0);
+	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-8 + sway, boatAngle);
+	drawSprite("boat_house",boatX-14*boatCos,boatY-14*boatSin-14 + sway, boatAngle);
+
+	drawSprite("boat_antenna",boatX+10*boatCos,boatY+10*boatSin-10 + sway, 0);
 
 	if (boatTransmitting)
 	{
-		drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75, 0);
+		drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75 + sway, 0);
 	}
 
+}
+
+function drawWaves()
+{
+	for (var i = waves.length - 1; i >= 0; i--) {
+		var wave = waves[i];
+		var t = (time - wave.spawnTime) % 5;
+		var frame = Math.floor(t);
+		if (frame > 0 && frame < 3)
+		{
+			//drawSprite("wave"+frame,wave.x,wave.y - t* 12);
+		}
+	}
 }
 
 function drawCities()
@@ -282,22 +309,26 @@ function drawUI()
 	if (getKey("left")) drawUISprite("key_lit_a",30,570);
 	if (getKey("right")) drawUISprite("key_lit_d",90,570);
 
+	var absTime = (new Date().getTime() / 1000);
 	
+	if (isGameOver)
+	{
+		var frame = Math.floor(absTime*1.5 % 2) + 1;
+		if (collectedGuys >= NUM_GUYS)
+		{
+			drawUISprite("ui_partytime"+frame,screenWidth /2,screenHeight /2 -50, 0);
+		} else{
+			drawUISprite("busted",screenWidth /2,screenHeight /2, (frame - 1.1) * -0.3);
+		}
+
+		drawUISprite("ui_restart",screenWidth - 100,screenHeight -80, (frame - 1.1) *0.3);
+	}
 
 	for (var i=0;i<collectedGuys;i++)
 	{
-		drawUISprite("portrait"+(i+1),250+100*i,screenHeight-75);
+		var off = Math.abs(Math.cos(absTime * (i+3)));
+		off *= 15;
+		drawUISprite("portrait"+(i+1),250+120*i,screenHeight-75-off);
 	}
 
-	if (isGameOver)
-	{
-		if (collectedGuys >= NUM_GUYS)
-		{
-			// AW YEAH!
-			//drawUISprite("busted",screenWidth /2,screenHeight /2, 0);
-		} else{
-			drawUISprite("busted",screenWidth /2,screenHeight /2, 0);
-		}
-		
-	}
 }
