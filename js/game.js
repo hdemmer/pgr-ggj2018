@@ -290,13 +290,15 @@ function drawUI()
 	
 	if (isGameOver)
 	{
+		var frame = Math.floor((new Date().getTime() / 1000)*1.5 % 2) + 1;
 		if (collectedGuys >= NUM_GUYS)
 		{
-			var frame = Math.floor((new Date().getTime() / 1000)*1.5 % 2) + 1;
 			drawUISprite("ui_partytime"+frame,screenWidth /2,screenHeight /2 -50, 0);
 		} else{
-			drawUISprite("busted",screenWidth /2,screenHeight /2, 0);
+			drawUISprite("busted",screenWidth /2,screenHeight /2, (frame - 1.1) * -0.3);
 		}
+
+		drawUISprite("ui_restart",screenWidth - 100,screenHeight -80, (frame - 1.1) *0.3);
 	}
 
 	for (var i=0;i<collectedGuys;i++)
