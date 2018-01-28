@@ -1,6 +1,8 @@
 
 var playlist = new Map()
 var noGuysTrack = null
+var sirenTrack = null
+var spawnTrack = null
 
 function initTracks(tracks, callBack) {
 
@@ -27,6 +29,24 @@ function startBackgroundMusic(trackName) {
         event.target.play()
     }) 
 }
+
+function playSirenLoopIfNeeded() {
+
+    if (sirenTrack == null) {
+        createAudio("audio/siren_loop.wav", { volume: 0.5, loop: true, muted: false }, function(event) {
+            sirenTrack = event.target
+            sirenTrack.play()
+        }) 
+    }
+}
+
+function playSpawnSound() {
+
+    createAudio("audio/attract1.wav", { volume: 0.5, loop: false, muted: false }, function(event) {
+        event.target.play()
+    }) 
+}
+
 
 function transmitNoGuysMusic() {
 
@@ -66,7 +86,7 @@ function onAudioLoaded(event) {
         console.log(playlist.size)
     } 
 
-    if (playlist.size == 3) {
+    if (playlist.size == 4) {
 
         console.log("all audio loaded.")
 

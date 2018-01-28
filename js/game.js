@@ -43,7 +43,7 @@ function start() {
 
 	initCollision();
 	initWorld();
-	initTracks(["track-0.wav","track-1.wav", "track-2.wav"]);
+	initTracks(["track-0.wav","track-1.wav", "track-2.wav", "track-3.wav"]);
     drawScene();
 }
 

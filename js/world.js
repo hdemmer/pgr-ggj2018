@@ -16,7 +16,8 @@ function spawnWave(x,y)
 }
 
 function spawnEnemy(x,y)
-{
+{	
+	playSpawnSound()
 	enemies.push({x:x,y:y,attracted:false,angle:0,spawnTime:time});
 }
 
@@ -161,7 +162,7 @@ function tickWorld()
 			continue;
 		}
 		if (enemy.attracted)
-		{
+		{	
 			var d = distanceToBoat(enemy.x,enemy.y);
 			if (d < BUSTED_DISTANCE)
 			{
@@ -185,6 +186,7 @@ function tickWorld()
 			if (signal > 0)
 			{
 				enemy.attracted = true;
+				playSirenLoopIfNeeded()
 			}
 
 		}
