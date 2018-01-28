@@ -25,7 +25,7 @@ function createAudio(src, options, callback) {
 }
 
 function startBackgroundMusic(trackName) {
-    createAudio("audio/"+trackName, { volume: 0.01, loop: true, muted: false }, function(event) {
+    createAudio("audio/"+trackName, { volume: 1.0, loop: true, muted: false }, function(event) {
         event.target.play()
     }) 
 }
@@ -51,7 +51,7 @@ function playSpawnSound() {
 function transmitNoGuysMusic() {
 
     if (noGuysTrack == null) {
-        createAudio("audio/bg.wav", { volume: 0.01, loop: true, muted: true }, function(event) {
+        createAudio("audio/bg.wav", { volume: 1.0, loop: true, muted: true }, function(event) {
             noGuysTrack = event.target
             if (! noGuysTrack.muted) {
 
@@ -71,7 +71,7 @@ function transmitNoGuysMusic() {
 
 function stopTransmitNoGuysMusic() {
    
-    if (noGuysTrack != nul) {
+    if (noGuysTrack != null) {
         noGuysTrack.muted = true
         noGuysTrack.pause()
     }
