@@ -22,10 +22,16 @@ function createAudio(src, options, callback) {
    return audio;
 }
 
+function startBackgroundMusic(trackName) {
+    createAudio("audio/"+trackName, { volume: 0.01, loop: true, muted: false }, function(event) {
+        event.target.play()
+    }) 
+}
+
 function transmitNoGuysMusic() {
 
     if (noGuysTrack == null) {
-        createAudio("audio/bg.wav", { volume: 0.1, loop: true, muted: true }, function(event) {
+        createAudio("audio/bg.wav", { volume: 0.01, loop: true, muted: true }, function(event) {
             noGuysTrack = event.target
             if (! noGuysTrack.muted) {
 
