@@ -19,7 +19,7 @@ var boatTargetSpeed = 0.0;
 var boatX = 600;
 var boatY = 600;
 var isGameOver = false;
-var NUM_GUYS = 5;
+var NUM_GUYS = 4;
 var collectedGuys = 0;
 
 var scrollX = -0.5 * screenWidth + boatX;
@@ -288,21 +288,20 @@ function drawUI()
 	if (getKey("right")) drawUISprite("key_lit_d",90,570);
 
 	
-
-	for (var i=0;i<collectedGuys;i++)
-	{
-		drawUISprite("portrait"+(i+1),250+100*i,screenHeight-75);
-	}
-
 	if (isGameOver)
 	{
 		if (collectedGuys >= NUM_GUYS)
 		{
-			// AW YEAH!
-			//drawUISprite("busted",screenWidth /2,screenHeight /2, 0);
+			var frame = Math.floor((new Date().getTime() / 1000)*1.5 % 2) + 1;
+			drawUISprite("ui_partytime"+frame,screenWidth /2,screenHeight /2 -50, 0);
 		} else{
 			drawUISprite("busted",screenWidth /2,screenHeight /2, 0);
 		}
-		
 	}
+
+	for (var i=0;i<collectedGuys;i++)
+	{
+		drawUISprite("portrait"+(i+1),250+120*i,screenHeight-75);
+	}
+
 }
