@@ -70,8 +70,8 @@ function initWorld()
 
 	for (var i = cities.length - 1; i >= 0; i--) {
 		var city = cities[i];
-		city.hasGuy = (Math.random() < 0.7?true:false);
-		city.evil = Math.random() < 0.7;
+		city.hasGuy = true //(Math.random() < 0.7?true:false);
+		city.evil = false //Math.random() < 0.7;
 	}
 }
 
@@ -119,6 +119,7 @@ function tickWorld()
 				{
 					city.hasGuy = false;
 					collectedGuys ++;
+					updateAudioTransmission(collectedGuys)
 					if (collectedGuys >= NUM_GUYS)
 					{
 						isGameOver = true;
