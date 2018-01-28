@@ -73,8 +73,6 @@ function initWorld()
 	}
 
 	
-	spawnEnemy(400,300);
-	spawnWave(550,550);
 
 	var guyCount = 0;
 
