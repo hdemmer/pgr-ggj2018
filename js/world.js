@@ -95,8 +95,6 @@ function trySpawnEnemy(city)
 
 function tickWorld()
 {
-	if (boatTransmitting)
-	{
 		for (var i = cities.length - 1; i >= 0; i--) {
 			var city = cities[i];
 
@@ -121,9 +119,12 @@ function tickWorld()
 				{
 					city.hasGuy = false;
 					collectedGuys ++;
+					if (collectedGuys >= NUM_GUYS)
+					{
+						isGameOver = true;
+					}
 				}
 			}
-		}
 	}
 
 	for (var i = enemies.length - 1; i >= 0; i--) {
