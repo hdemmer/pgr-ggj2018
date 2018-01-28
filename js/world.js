@@ -1,6 +1,7 @@
 
 var cities = [];
 var enemies = [];
+var waves = [];
 
 var ENEMY_SPEED = 20;
 var BASE_RADIUS = 100;
@@ -8,6 +9,11 @@ var BUSTED_DISTANCE = 40;
 var SCALE = 10;
 var boatPower = 1;
 var boatConversion = 0.1;
+
+function spawnWave(x,y)
+{
+	waves.push({x:x,y:y,spawnTime:time});
+}
 
 function spawnEnemy(x,y)
 {
@@ -67,6 +73,7 @@ function initWorld()
 
 	
 	spawnEnemy(400,300);
+	spawnWave(550,550);
 
 	for (var i = cities.length - 1; i >= 0; i--) {
 		var city = cities[i];

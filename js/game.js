@@ -172,6 +172,7 @@ function drawScene()
 	ctx.clearRect(0,0,screenWidth,screenHeight);
 	//ctx.drawImage(sprites["map"],10,10); 
 	drawSprite("map",2000,1500);
+	drawWaves();
 	drawCities();
 	drawEnemies();
 	drawBoat();
@@ -181,8 +182,18 @@ function drawScene()
 	window.requestAnimationFrame(drawScene);
 }
 
+var waveAngle = 0;
+
 function drawBoat()
 {
+
+	waveAngle = ((1-deltaTime)*waveAngle + deltaTime * boatAngle);
+	var waveFrame = Math.floor(time*3) % 2 + 1;
+	if (boatSpeed > 1)
+	{
+		drawSprite("wave"+waveFrame,boatX - 70 * boatCos,boatY - 70 * boatSin, waveAngle);
+	}
+
 	drawSprite("boat_hull_lower",boatX,boatY, boatAngle);
 	drawSprite("boat_hull",boatX,boatY-8, boatAngle);
 
@@ -196,6 +207,19 @@ function drawBoat()
 		drawSprite("trans"+trans_frame,boatX+10*boatCos,boatY+10*boatSin-75, 0);
 	}
 
+}
+
+function drawWaves()
+{
+	for (var i = waves.length - 1; i >= 0; i--) {
+		var wave = waves[i];
+		var t = (time - wave.spawnTime) % 5;
+		var frame = Math.floor(t);
+		if (frame > 0 && frame < 3)
+		{
+			//drawSprite("wave"+frame,wave.x,wave.y - t* 12);
+		}
+	}
 }
 
 function drawCities()
